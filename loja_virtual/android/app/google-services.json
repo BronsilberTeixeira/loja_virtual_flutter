@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "240664241607",
+    "project_id": "loja-virtual-flutter-bc6f8",
+    "storage_bucket": "loja-virtual-flutter-bc6f8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240664241607:android:2ec0b7c3b3031656a065e2",
+        "android_client_info": {
+          "package_name": "br.com.bronsilber.loja_virtual"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240664241607-6vh8qc5fo23rpdm83d0vom06jg730j7t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBaATbGUg3T2bCa9T56IRXcK7EJctOHiZE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240664241607-6vh8qc5fo23rpdm83d0vom06jg730j7t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
