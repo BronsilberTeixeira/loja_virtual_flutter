@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:transparent_image/transparent_image.dart';
 class HomeTab extends StatelessWidget {
 
   @override
@@ -9,8 +11,9 @@ class HomeTab extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Color.fromARGB(255,0,255,255),
-            Color.fromARGB(255,0,128,128)
+            Color.fromARGB(255,220,220,220),
+            Color.fromARGB(255,128,128,128),
+            Color.fromARGB(255,28,28,28)
           ],
           begin: Alignment.bottomRight,
           end: Alignment.topLeft
@@ -29,7 +32,9 @@ class HomeTab extends StatelessWidget {
               backgroundColor: Colors.transparent,
               elevation: 0.0,
               flexibleSpace: FlexibleSpaceBar(
-                title: const Text("Novidades"),
+                title: const Text("Novidades", 
+                  style: TextStyle(color: Colors.white)
+                ),
                 centerTitle: true
               ),
              ),
@@ -45,16 +50,26 @@ class HomeTab extends StatelessWidget {
                       ),
                     )
                   );
-                  else {
-                    print(snapshot.data.documents.length);
-                    return SliverToBoxAdapter(
-                  child: Container(
-                      height: 200.0,
-                      alignment: Alignment.center,
-                      child: Container()
-                    )
+                else 
+                  return SliverStaggeredGrid.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 1.0,
+                    crossAxisSpacing: 1.0,
+                    staggeredTiles: snapshot.data.documents.map(
+                      (doc) {
+                        return StaggeredTile.count(doc.data["x"], doc.data["y"]);
+                      }
+                    ).toList(),
+                    children: snapshot.data.documents.map(
+                      (doc) {
+                        return FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage, 
+                          image: doc.data["img"],
+                          fit:  BoxFit.cover,
+                        );
+                      }
+                    ).toList(),
                   );
-                  }
                 },
              )
           ]
