@@ -14,12 +14,19 @@ class ProductsTap extends StatelessWidget {
           return Center(child: CircularProgressIndicator(),);
         }
         else {
-          return ListView(
-            children: snapshot.data.documents.map(
+
+          var dividerTiles = ListTile.
+          divideTiles(
+            tiles: snapshot.data.documents.map(
               (doc){
                 return Categorytile(doc);
               }
             ).toList(),
+            color: Colors.grey
+          ).toList();
+
+          return ListView(
+            children: dividerTiles
           );
         }
       }
