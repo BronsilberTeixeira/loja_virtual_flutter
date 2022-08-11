@@ -1,5 +1,7 @@
 
 import 'package:flutter/material.dart';
+import 'package:loja_virtual/screens/cadastrar_screen.dart';
+import 'package:loja_virtual/screens/login_screen.dart';
 import 'screens/home_screen.dart';
 
 void main() {
