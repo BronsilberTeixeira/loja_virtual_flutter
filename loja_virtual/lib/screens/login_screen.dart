@@ -12,11 +12,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _emailController = TextEditingController();
+  final _senhaController = TextEditingController();
+
   bool verSenha = true;
   final _formKey = GlobalKey<FormState>();
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(
             "Entrar",
@@ -39,13 +45,15 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         body: ScopedModelDescendant<UserModal>(
           builder: (context, child, model) {
-            if(model.isLoading) return Center(child: CircularProgressIndicator());
+            if (model.isLoading)
+              return Center(child: CircularProgressIndicator());
             return Form(
                 key: _formKey,
                 child: ListView(
                   padding: EdgeInsets.all(20),
                   children: [
                     TextFormField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                           hintText: "E-mail",
                           icon: Icon(Icons.mail_outline_rounded)),
@@ -60,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       children: [
                         Expanded(
                           child: TextFormField(
+                            controller: _senhaController,
                             decoration: InputDecoration(
                                 hintText: "Senha",
                                 icon: Icon(Icons.lock_outlined)),
@@ -90,7 +99,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     Align(
                       alignment: Alignment.centerRight,
                       child: FlatButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          if (_emailController.text.isEmpty) {
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text('Insira o e-mail de recuperação'),
+                              backgroundColor: Colors.red[900],
+                              duration: Duration(seconds: 4),
+                            ));
+                          } else {
+                            model.recoverPass(_emailController.text);
+                            _scaffoldKey.currentState.showSnackBar(SnackBar(
+                              content: Text(
+                                  'Confira seu e-mail'),
+                              backgroundColor: Theme.of(context).primaryColor,
+                              duration: Duration(seconds: 4),
+                            ));
+                          }
+                        },
                         child: Text(
                           "Esqueci minha senha",
                           textAlign: TextAlign.right,
@@ -112,7 +137,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           if (_formKey.currentState.validate()) {}
 
-                          model.signIn();
+                          model.signIn(_emailController.text,
+                              _senhaController.text, _onSuccess, _onFail);
                         },
                       ),
                     )
@@ -120,5 +146,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 ));
           },
         ));
+  }
+
+  void _onSuccess() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Usuario logado com sucesso'),
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 4),
+    ));
+    Future.delayed(Duration(seconds: 1)).then((_) {
+      Navigator.of(context).pop();
+    });
+  }
+
+  void _onFail() {
+    _scaffoldKey.currentState.showSnackBar(SnackBar(
+      content: Text('Falha ao Entrar com usuario, tente outro !'),
+      backgroundColor: Colors.red[900],
+      duration: Duration(seconds: 4),
+    ));
   }
 }
