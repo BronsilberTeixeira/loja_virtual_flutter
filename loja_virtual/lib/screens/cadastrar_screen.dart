@@ -31,7 +31,7 @@ class _CadastrarScreenState extends State<CadastrarScreen> {
           ),
           centerTitle: true,
         ),
-        body: ScopedModelDescendant<UserModal>(
+        body: ScopedModelDescendant<UserModel>(
           builder: (context, child, model) {
             if(model.isLoading) return Center(child: CircularProgressIndicator());
             return Form(

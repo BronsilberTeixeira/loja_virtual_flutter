@@ -48,7 +48,7 @@ class CustomDrawer extends StatelessWidget {
                     Positioned(
                       left: 0,
                       bottom: 0,
-                      child:ScopedModelDescendant<UserModal>(
+                      child:ScopedModelDescendant<UserModel>(
                         builder: (context, child, model) {
                         return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,

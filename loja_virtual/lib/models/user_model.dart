@@ -5,12 +5,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:flutter/material.dart';
 
-class UserModal extends Model {
+class UserModel extends Model {
   FirebaseAuth _auth = FirebaseAuth.instance;
   FirebaseUser firebaseUser;
   Map<String, dynamic> userData = Map();
   //usuario atual
   bool isLoading = false;
+
+  static UserModel of(BuildContext context) => 
+    ScopedModel.of<UserModel>(context);
 
   @override
   void addListener(VoidCallback listener) {
