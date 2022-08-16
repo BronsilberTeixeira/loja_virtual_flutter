@@ -10,6 +10,8 @@ class CartModel extends Model{
 
   List<CartProduct> products = [];
 
+  bool isLoadding = false;
+
   CartModel(this.user);
 
   static CartModel of(BuildContext context) => 
@@ -17,7 +19,7 @@ class CartModel extends Model{
 
   void addCartItem(CartProduct cartProduct) {
     products.add(cartProduct);
-    Firestore.instance.collection("user").document(user.firebaseUser.uid).
+    Firestore.instance.collection("users").document(user.firebaseUser.uid).
       collection("cart").add(cartProduct.toMap()).then((doc) {
         cartProduct.cid = doc.documentID;
       });
