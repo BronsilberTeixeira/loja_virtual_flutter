@@ -2,14 +2,24 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:loja_virtual/datas/cart_product.dart';
 import 'package:loja_virtual/datas/products_data.dart';
+import 'package:loja_virtual/models/cart_model.dart';
 
-class CartTile extends StatelessWidget {
+class CartTile extends StatefulWidget {
   final CartProduct cartProduct;
-  const CartTile(this.cartProduct);
+  const CartTile({Key key, this.cartProduct}) : super(key: key);
+
+  @override
+  State<CartTile> createState() => _CartTileState(cartProduct);
+}
+
+class _CartTileState extends State<CartTile> {
+  final CartProduct cartProduct;
+  _CartTileState(this.cartProduct);
 
   @override
   Widget build(BuildContext context) {
     Widget _buildContent() {
+      double price = cartProduct.productData.price * cartProduct.quantidade;
       return Row(
         children: [
           Container(
@@ -24,6 +34,8 @@ class CartTile extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(10),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
                     cartProduct.productData.title,
@@ -34,27 +46,44 @@ class CartTile extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.w300),
                   ),
                   Text(
-                    "R\$ ${cartProduct.productData.price.toStringAsFixed(2)}",
+                    "R\$ ${ price.toStringAsFixed(2) }",
                     style: TextStyle(
                         color: Theme.of(context).primaryColor,
                         fontSize: 20,
                         fontWeight: FontWeight.bold),
                   ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       IconButton(
                         icon: Icon(Icons.remove), 
-                        onPressed: () {}
+                        color: Colors.deepOrange[900],
+                        onPressed: cartProduct.quantidade == 1 
+                        ? null 
+                        : () {
+                           setState(() {
+                            CartModel.of(context).decCartItem(cartProduct);
+                          });
+                        }
                       ),
                       Text(cartProduct.quantidade.toString()),
                       IconButton(
                         icon: Icon(Icons.add), 
-                        onPressed: () {}
+                        color: Colors.blue[500],
+                        onPressed: () {
+                          setState(() {
+                            CartModel.of(context).incCartItem(cartProduct);
+                          });
+                        }
                       ),
-                      FlatButton(
-                        onPressed: () {}, 
-                        child: Text("remove"),
-                        textColor: Colors.amber[800],
+                      IconButton(
+                        onPressed: () {
+                          setState(() {
+                            CartModel.of(context).removeCartItem(cartProduct);
+                          });
+                        }, 
+                        icon: Icon(Icons.delete_outline),
+                        color: Colors.amber[800],
                       )
                     ],
                   )
